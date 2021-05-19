@@ -2,33 +2,37 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 
 function MainPage() {
-    const [data, setData] = useState([]);
+    const [films, setFilms] = useState([]);
 
-    const getData = async () => {
-        await axios.post('localhost:5000/api/films').then((res) => {
+    const getFilms = async () => {
+        const url = 'http://localhost:5000/api/films';
+        await axios.get(url).then((res) => {
             try {
-                console.log(res.data.films);
-                setData(res.data.films);
-            }
-            catch (err) {
+                console.log(res.data);
+                setFilms(res.data);
+            } catch (err) {
                 console.log(err)
             }
         })            
     }
 
     useEffect(() => {
-        if (data.length === 0) {
-            getData()
+        if (films.length === 0) {
+            getFilms()
             console.log('Getting data...')
         } else {
-            console.log(data);
+            console.log(`Data retrieved: ${films}`);
         }
     })
 
     return (
         <>
-            <h1>Wooooop</h1>
-            {data}
+            <div className="films">
+                {films.map(film => (
+                    <h2 className="film-title">{film.title}</h2>
+                ))}
+            </div>
+
         </>
     )
 }
