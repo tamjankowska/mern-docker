@@ -29,7 +29,13 @@ function MainPage() {
         <>
             <div className="films">
                 {films.map(film => (
-                    <h2 className="film-title">{film.title}</h2>
+                    <div className="film-object">
+                        <h2 className="film-title">{film.title}</h2>
+                        <h3 className="film-director">Director: {film.director}</h3>
+                        <h3 className="film-genre">Genre: {film.genre}</h3>
+                        <h3 className="film-release">Released: {film.releaseYear}</h3>
+                        <h3 className="film-rating"> Rated {film.rating}/10</h3>
+                    </div>
                 ))}
             </div>
 
