@@ -28,6 +28,7 @@ function MainPage() {
     return (
         <>
             <div className="films">
+                <h1>Watchlist</h1>
                 {films.map(film => (
                     <div className="film-object">
                         <h2 className="film-title">{film.title}</h2>
