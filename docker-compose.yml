@@ -13,8 +13,11 @@ services:
         ports:
             - ${APP_SERVER_PORT}:${APP_SERVER_PORT}
         volumes:
-            - ./server/app/data
+            - .:/code
         command: npm run dev
+        depends_on:
+            - mongo
+            - postgres
 
 ########################
 # Setup client container
@@ -28,7 +31,41 @@ services:
         ports:
             - ${REACT_APP_PORT}:${REACT_APP_PORT}
         volumes:
-            - ./client/app/data
+            - .:/code
         links:
             - server
+            - postgres
+            - mongo
+        depends_on:
+            - server
+            
         command: npm start
+
+#############################
+# Setup postgres db container 
+#############################
+    postgres:
+        hostname: postgres
+        image: postgres
+        env_file:
+            - .env
+        volumes:
+            - postgres-data:/var/lib/postgresql/data/
+
+##########################
+# Setup mongo db container 
+##########################
+    mongo:
+        hostname: mongo
+        image: mongo
+        expose:
+            - ${MONGO_PORT}
+        ports:
+            - ${MONGO_PORT}:${MONGO_PORT}
+        env_file:
+            - .env
+        volumes:
+            - mongo-data:/data/db
+volumes: 
+    postgres-data:
+    mongo-data:
